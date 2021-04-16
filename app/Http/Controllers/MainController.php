@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProduitsExport;
 use App\Models\User;
 use App\Models\Produit;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class MainController extends Controller
 {
@@ -139,6 +142,10 @@ class MainController extends Controller
             return $livre["price"] >= 10000;
         });
 
-        dd($nouvelleCollection);
+    }
+
+    public function exportProduits()
+    {
+        return Excel::download(new ProduitsExport, "produits.xlsx");
     }
 }

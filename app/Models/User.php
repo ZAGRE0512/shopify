@@ -45,4 +45,23 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Produit::class);
     }
+
+    public function role(){
+
+        return $this->belongsTo(Role::class);
+    }
+
+    public function routeNotificationForNexmo($notification)
+    {
+        return $this->phone_number;
+    }
+
+    public  function isAdmin(){
+
+        if ($this->role->profil=="admin" OR $this->role->profil=="root")
+
+            return true;
+        else
+            return false;
+    }
 }

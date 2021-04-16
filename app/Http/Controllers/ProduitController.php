@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Produit;
 use App\Models\Category;
 use App\Mail\ProduitAjoute;
+use App\Notifications\ModificationProduit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ProduitFormRequest;
@@ -19,7 +20,7 @@ class ProduitController extends Controller
      */
     public function index()
     {
-        $produits = Produit::orderByDesc("id")->paginate(15);
+        $produits = Produit::orderByDesc("id")->paginate(10);
         return view("front-office.produits.index", [
             "produits" => $produits
         ]);
@@ -32,6 +33,7 @@ class ProduitController extends Controller
      */
     public function create()
     {
+
         $categories = Category::all();
         $produit = new Produit;
         return view("front-office.produits.create", [ 
@@ -53,7 +55,7 @@ class ProduitController extends Controller
         $imageName = null;
         if($request->file("image")){
             $imageName = time().$request->file("image")->getClientOriginalName();
-            $request->file("image")->storeAs("uploads/produits", $imageName);
+            $request->file("image")->storeAs("public/uploads/produits", $imageName);
         }
         $request->session()->put("imageName", $imageName);
 
@@ -81,7 +83,7 @@ class ProduitController extends Controller
      */
     public function show(Produit $produit)
     {
-        dd($produit);
+        return view("front-office.produits.show",['produit'=>$produit]);
     }
 
     /**
@@ -115,6 +117,8 @@ class ProduitController extends Controller
             "category_id" => $request->category_id,
             "description" => $request->description,
         ]);
+        $user= User::first();
+        $user->notify(new ModificationProduit);
 
         return redirect()->route("produits.index")->with("statut", "Le produit a bien été modifié");
     }

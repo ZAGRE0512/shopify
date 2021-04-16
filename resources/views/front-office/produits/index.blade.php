@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 mt-4">
-            <h1 class="text-center">Tous nos Produits</h1>
+            <h1 class="text-center">Liste des Produits</h1>
             <hr/>
             </div>
         </div>
@@ -20,6 +20,9 @@
                 <div>
                     <a class="btn btn-success btn-sm" href="{{ route('produits.create') }}">
                         <i class="fas fa-plus"></i> Ajouter
+                    </a>
+                    <a class="btn btn-warning btn-sm" href="{{ route('exporter') }}">
+                        <i class="fas fa-file-export"></i> Exporter en xlsx
                     </a>
                 </div>
                 {{-- Le nom de l'image sélectionnée est : {{ session('imageName') }} --}}
@@ -40,16 +43,27 @@
                                 <td>{{ $produit->category ? $produit->category->libelle : "Non catégorisé" }}</td>
                                 <td>{{ formatPrixBf($produit->prix) }}</td>
                                 <td>{{ $produit->description }}</td>
+                                {{--<td>--}}
+                                {{--<a class="btn btn-info btn-sm mr-2" href="{{ route('produits.show',$produit) }}"><i class="fas fa-eye"></i></a>--}}
+                                {{--<a href="{{ route('produits.edit', $produit) }}" class="btn btn-primary btn-sm mr-2" ><i class="fas fa-edit"></i></a>--}}
+                                {{--<a href="{{ route("produits.destroy", $produit->id) }}" class="btn btn-danger btn-sm"  onClick="--}}
+                                    {{--event.preventDefault(); --}}
+                                    {{--if(confirm('Etes-vous sur de vouloir supprimer cet produit ?')) --}}
+                                    {{--document.getElementById('{{ $produit->id }}').submit();" ><i class="fas fa-trash"></i></a>--}}
+                                {{--<form id="{{ $produit->id }}" method="post" action="{{ route("produits.destroy", $produit->id) }}">--}}
+                                    {{--@csrf--}}
+                                    {{--@method("delete")--}}
+                                {{--</form>--}}
+                                {{--</td>--}}
+
                                 <td>
-                                <a href="{{ route('produits.edit', $produit) }}" class="btn btn-primary btn-sm mr-2" ><i class="fas fa-edit"></i></a>
-                                <a href="{{ route("produits.destroy", $produit->id) }}" class="btn btn-danger btn-sm"  onClick="
-                                    event.preventDefault(); 
-                                    if(confirm('Etes-vous sur de vouloir supprimer cet produit ?')) 
-                                    document.getElementById('{{ $produit->id }}').submit();" ><i class="fas fa-trash"></i></a>
-                                <form id="{{ $produit->id }}" method="post" action="{{ route("produits.destroy", $produit->id) }}">
-                                    @csrf
-                                    @method("delete")
-                                </form>
+                                    <a class="btn btn-info btn-sm mr-2" href="{{ route('produits.show',$produit) }}"><i class="fas fa-eye"></i></a>
+                                    <a href="{{ route('produits.edit', $produit) }}" class="btn btn-primary btn-sm mr-2" ><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="btn btn-danger btn-sm"  onClick="event.preventDefault();suppressionConfirm('{{ $produit->id }}')"><i class="fas fa-trash"></i></a>
+                                    <form id="{{ $produit->id }}" method="post" action="{{ route("produits.destroy", $produit->id) }}">
+                                        @csrf
+                                        @method("delete")
+                                    </form>
                                 </td>
                             </tr>
             

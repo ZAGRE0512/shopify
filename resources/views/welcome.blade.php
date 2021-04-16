@@ -6,11 +6,11 @@
                  <h1 class="display-2  text-light mb-2 mt-5"><strong>Bienvenue sur Shopify !</strong> </h1>
                  <p class="lead  text-light mb-5">Accédez à tous vos produits à des prix défiant toute concurrence !</p>
         <p>
-         <a href="https://blueprintsapp.launchaco.com/" class="btn bg-danger shadow-lg btn-round text-light btn-lg btn-rised">Consultez nos produits</a>
+         <a href="{{route('produits.index')}}" class="btn bg-danger shadow-lg btn-round text-light btn-lg btn-rised">Consultez nos produits</a>
         </p>
                          
              </div>
-              
+
            </div>
          </div>
     </section>

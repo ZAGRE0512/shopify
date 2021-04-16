@@ -1,10 +1,10 @@
 <?php
 
-use App\Mail\ProduitAjoute;
 use Illuminate\Support\Facades\Route;
+use App\Mail\ProduitAjoute;
+use App\Notifications\ModificationProduit;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProduitController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,9 +16,26 @@ use App\Http\Controllers\ProduitController;
 |
 */
 
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';
+
 Route::get('/', [MainController::class, "accueil"])->name('accueil');
 
-Route::resource("produits", ProduitController::class);
+
+Route::middleware(["auth","isAdmin"])->prefix('admin')->group(function (){
+
+    Route::resource("produits", ProduitController::class);
+    Route::get('export-produits', [MainController::class,'exportProduits'])->name('exporter');
+});
+
+Route::get("list-produits", [ProduitController::class,"index"]);
 
 Route::get("ajouter-produit", [MainController::class, "ajouterProduit"]);
 
@@ -39,3 +56,8 @@ Route::get("test-collection", [MainController::class, "collection"]);
 Route::get("test-mail", function(){
     return new ProduitAjoute;
 });
+
+Route::get("test-notification", function(){
+    return new ModificationProduit;
+});
+
